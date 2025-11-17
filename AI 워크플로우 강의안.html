@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 워크플로우로 수업과 업무를 혁신하는 방법</title>
+    <style>
+        /* --- Google Fonts --- */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+
+        /* --- CSS Variables --- */
+        :root {
+            --light-bg: #f8f9fa;
+            --light-text: #212529;
+            --light-card-bg: #ffffff;
+            --light-border: #dee2e6;
+            --light-header-bg: rgba(255, 255, 255, 0.85);
+            --primary-color: #4285F4; /* Google Blue */
+            --secondary-color: #34A853; /* Google Green */
+            --accent-color: #FBBC05; /* Google Yellow */
+            --shadow-color: rgba(0, 0, 0, 0.1);
+
+            --bg: var(--light-bg);
+            --text: var(--light-text);
+            --card-bg: var(--light-card-bg);
+            --border: var(--light-border);
+            --header-bg: var(--light-header-bg);
+        }
+
+        html.dark-mode {
+            --dark-bg: #1a1a1a;
+            --dark-text: #e8e6e3;
+            --dark-card-bg: #2c2c2c;
+            --dark-border: #444444;
+            --dark-header-bg: rgba(26, 26, 26, 0.85);
+            --shadow-color: rgba(0, 0, 0, 0.4);
+
+            --bg: var(--dark-bg);
+            --text: var(--dark-text);
+            --card-bg: var(--dark-card-bg);
+            --border: var(--dark-border);
+            --header-bg: var(--dark-header-bg);
+        }
+
+        /* --- General Styles --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* --- Header & Hero --- */
+        .app-header {
+            position: sticky;
+            top: 0;
+            width: 100%;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--header-bg);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .header-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .hero {
+            position: relative;
+            height: 50vh;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.4);
+            z-index: -1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            max-width: 700px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+        }
+
+        /* --- Section Styling --- */
+        section {
+            padding: 60px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section:last-of-type {
+            border-bottom: none;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 40px;
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--secondary-color);
+            padding-left: 15px;
+        }
+
+        h4 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* --- Card Styles --- */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px var(--shadow-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px var(--shadow-color);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .card-title span { margin-right: 10px; }
+
+        .message-box {
+            background-color: rgba(66, 133, 244, 0.1);
+            border-left: 4px solid var(--primary-color);
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        /* --- Interactive Workflow (Details/Summary) --- */
+        .workflow-item {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px var(--shadow-color);
+            transition: box-shadow 0.3s ease;
+        }
+        .workflow-item[open] {
+            box-shadow: 0 8px 15px var(--shadow-color);
+        }
+        .workflow-item summary {
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 20px;
+            cursor: pointer;
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .workflow-item summary::-webkit-details-marker {
+            display: none;
+        }
+        .workflow-item summary::after {
+            content: '▼';
+            transition: transform 0.3s ease;
+        }
+        .workflow-item[open] summary::after {
+            transform: rotate(180deg);
+        }
+        .workflow-content {
+            padding: 0 20px 20px 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .workflow-content p {
+            margin-bottom: 15px;
+        }
+
+        .workflow-content ol {
+            padding-left: 20px;
+        }
+        .workflow-content li {
+            margin-bottom: 10px;
+        }
+
+        strong {
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .chip {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 5px;
+        }
+
+
+        /* --- Prompt Box --- */
+        .prompt-box {
+            position: relative;
+            background-color: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-top: 10px;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .copy-btn:hover {
+            opacity: 1;
+        }
+
+        /* --- Explanation Box (추가된 부분) --- */
+        .explanation-box {
+            position: relative;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 20px 20px 35px;
+            margin: 25px 0 15px 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            box-shadow: 0 2px 4px var(--shadow-color);
+        }
+        .explanation-box::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 8px;
+            background-color: var(--primary-color);
+            border-radius: 12px 0 0 12px;
+        }
+        .explanation-box .highlight {
+            display: inline-block;
+            border: 2px solid #E67E22;
+            color: #E67E22;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 8px;
+            background-color: rgba(230, 126, 34, 0.1);
+        }
+
+
+        /* --- Dark/Light Mode Toggle --- */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+        .theme-switch {
+            display: inline-block;
+            height: 24px;
+            position: relative;
+            width: 50px;
+            margin-left: 10px;
+        }
+        .theme-switch input {
+            display: none;
+        }
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            background-color: #fff;
+            bottom: 4px;
+            content: "";
+            height: 16px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 16px;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: var(--primary-color);
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #888;
+        }
+        
+        /* --- Responsive Design --- */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            h2 {
+                font-size: 2rem;
+            }
+            h3 {
+                font-size: 1.5rem;
+            }
+            .header-title {
+                display: none;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="app-header">
+        <div class="header-title">👨‍🏫 AI 워크플로우 강의</div>
+        <div class="theme-switch-wrapper">
+            <span>☀️ / 🌙</span>
+            <label class="theme-switch" for="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <div class="slider round"></div>
+            </label>
+        </div>
+    </header>
+
+    <div class="hero">
+        <h1><strong>AI 워크플로우</strong>로 <strong>수업</strong>과 <strong>업무</strong> 혁신하기</h1>
+        <p>Gemini, NotebookLM, Google AI Studio를 연계한 실전 활용법</p>
+    </div>
+
+    <main class="container">
+        
+        <!-- 1. 새로운 시대, 새로운 도구 -->
+        <section id="introduction">
+            <h2>🚀 새로운 시대, 새로운 도구</h2>
+            
+            <h3>(1) AI 시대, 선생님의 고민은 무엇인가요?</h3>
+            <div class="card">
+                <p>"ChatGPT, Gemini, 노트북 LM 등... AI는 너무 많은데, 뭘 써야 할지 모르겠어요." 🤔</p>
+                <p>"AI가 만든 자료, 믿을 수 있는 정보인지 불안해요." 😟</p>
+                <p>"프롬프트, 어떻게 써야 원하는 결과가 나오는지 막막해요." 😫</p>
+            </div>
+            <div class="message-box">
+                <strong>핵심 메시지:</strong> 우리는 '가장 좋은 단 하나의 AI'를 찾는 것에서 벗어나야 합니다. 마치 요리사가 칼, 냄비, 도마 등 각 도구의 장점을 활용해 최고의 요리를<br> 만들듯, 우리도 <strong>각 AI 도구의 강점을 엮어 최고의 결과물을 만드는 'AI 워크플로우'</strong>를 익혀야 합니다. 이 강의는 그 방법을 알려드립니다. 💡
+            </div>
+
+            <h3>(2) 우리가 사용할 3가지 AI 서비스 소개</h3>
+            <div class="tools-grid">
+                <div class="card">
+                    <div class="card-title"><span>💡</span>Gemini</div>
+                    <p><strong>역할:</strong> 창의적인 글쓰기, 브레인스토밍, 코딩 등 무(無)에서 유(有)를 <strong>창작</strong>하는 만능 조수.</p>
+                    <p><strong>특징:</strong> <strong>범용성</strong>이 뛰어나고, 대화형으로 아이디어를 쉽게 발전시킬 수 있습니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span>📚</span>NotebookLM</div>
+                    <p><strong>역할:</strong> 내가 제공한 자료(교과서 PDF, 업무 매뉴얼) 안에서만 정보를 찾고 답변하는 가장 <strong>정확</strong>하고 믿을 수 있는 AI.</p>
+                    <p><strong>특징:</strong> '환각(Hallucination)' 현상이 거의 없습니다. <strong>소스 기반 답변</strong>으로 신뢰도가 매우 높습니다.</p>
+                </div>
+                <div class="card">
+                    <div class="card-title"><span>🛠️</span>Google AI Studio</div>
+                    <p><strong>역할:</strong> 최강의 추론 능력을 가진 Gemini 2.5 Pro 모델을 활용, 고품질 웹 콘텐츠를 대량 제작하고 AI 앱을 개발하는 개인 맞춤형 AI 조련사.</p>
+                    <p><strong>특징:</strong> 프롬프트 고도화, 다양한 <strong>웹 콘텐츠 및 앱 제작</strong>을 쉽게 지원합니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 5가지 실전 워크플로우 -->
+        <section id="workflows">
+            <h2>⚙️ 5가지 실전 워크플로우</h2>
+
+            <details class="workflow-item">
+                <summary>📊 워크플로우 1: 교과서로 5분 만에 수업 PPT 만들기 📊</summary>
+                <div class="workflow-content">
+                    <h4>🎯 목표: 14~15페이지 '로봇의 공학적 특성' 단원의 내용으로 PPT 초안 완성하기</h4>
+                    <p>[교과서] → NotebookLM → [내용] → Gemini → [수업용 PPT]</p>
+                    <ol>
+                        <li><strong>Step 1 (NotebookLM):</strong> 교과서 PDF 파일을 NotebookLM에 업로드합니다.</li>
+                        <li><strong>Step 2 (NotebookLM):</strong> 14~15페이지 '로봇의 공학적 특성' 단원의 내용을 자세히 정리하고 슬라이드 형태로 변형을 요청합니다.</li>
+                        <li><strong>Step 3 (Gemini):</strong> NotebookLM이 정리해준 텍스트를 복사하여 Gemini에 붙여넣고, 고1 수업용 슬라이드를 제작해 달라고 요청합니다.</li>
+                        <li><strong>Step 4 (Gemini):</strong> '슬라이드로 내보내기' - '슬라이드 열기'를 누르고 구글 슬라이드에서 PPT를 수정합니다.</li>
+                    </ol>
+                </div>
+            </details>
+            
+            <details class="workflow-item">
+                <summary>🌐 워크플로우 2: 내용 설명용 웹 수업자료 만들기 🌐</summary>
+                <div class="workflow-content">
+                    <h4>🎯 목표: 학생들이 흥미를 느낄 만한 다양한 웹 수업자료 만들기</h4>
+                    <p>[교과서] → NotebookLM → [내용] → Gemini(Canvas) → [인터랙티브 웹자료]</p>
+                    <ol>
+                        <li><strong>Step 1 (NotebookLM):</strong> 교과서 PDF 파일을 NotebookLM에 업로드합니다.</li>
+                        <li><strong>Step 2 (NotebookLM):</strong> 16페이지 '로봇의 구성' 단원의 내용을 자세히 정리해 달라고 요청합니다.</li>
+                        <li><strong>Step 3 (Gemini):</strong> 정리된 내용을 Gemini에 제공하고 <strong>캔버스</strong> 기능을 활성화 한 후 다음과 같이 요청합니다.
+                            <div class="prompt-box">"다음 내용을 바탕으로, 고1 학생들을 위한 수업용 <strong>웹 문서</strong>를 <strong>하나의 HTML</strong>로 만들어줘. 디자인은 현대적이고 이모지를 넣어주고 <br>인터렉티브하게 만들어줘."<button class="copy-btn">복사</button></div>
+                        </li>
+                    </ol>
+                    <!-- ▼▼▼ 요청에 따라 추가된 부분 ▼▼▼ -->
+                    <div class="explanation-box">
+                        <span class="highlight">"하나의 html"</span> = html(구조) + css(디자인) + JavaScript(상호작용)
+                    </div>
+                    <!-- ▲▲▲ 요청에 따라 추가된 부분 ▲▲▲ -->
+                    <p><strong>심화:</strong> Gemini의 Canvas 기능을 활용하여 웹 퀴즈, 시뮬레이션, 게임 등 다양한 콘텐츠를 제작할 수도 있습니다.</p>
+                </div>
+            </details>
+
+            <details class="workflow-item">
+                <summary>📈 워크플로우 3: 최신 자료로 웹 수업자료 만들기 📈</summary>
+                <div class="workflow-content">
+                    <h4>🎯 목표: 생체모방로봇, 의료로봇에 대한 최신 자료를 리서치 기능을 활용해 소스로 추가하고 웹 수업자료 만들기</h4>
+                    <p>[주제] → NotebookLM(딥리서치) → [최신자료] → Google AI Studio → [인터랙티브 웹자료]</p>
+                    <ol>
+                        <li><strong>Step 1 (NotebookLM):</strong> Fast Research를 활용해 한번에 10개의 최신 자료를 추가합니다.</li>
+                        <li><strong>Step 2 (NotebookLM):</strong> 딥리서치(Deep Research) 기능을 활성화하여, NotebookLM이 웹에서 관련된 최신 연구나 신뢰도 높은 자료를 스스로 찾아 소스에 추가하도록 합니다.</li>
+                        <li><strong>Step 3 (Google AI Studio):</strong> NotebookLM이 찾아준 최신 자료 텍스트를 Google AI Studio에 붙여넣고, 다음과 같은 프롬프트를 작성합니다.
+                            <div class="prompt-box">"다음 내용을 바탕으로, 고1 학생들을 위한 수업용 <strong>웹 인포그래픽</strong>을 <strong>하나의 HTML</strong>로 만들어줘. 디자인은 현대적이고 <br>이모지를 넣어주고 인터렉티브하게 만들어줘."<button class="copy-btn">복사</button></div>
+                        </li>
+                    </ol>
+                    <p><strong>심화:</strong> Compare mode를 활용하여 한번에 다양한 웹 콘텐츠를 대량으로 제작할 수 있습니다.</p>
+                </div>
+            </details>
+
+            <details class="workflow-item">
+                <summary>🤖 워크플로우 4: 업무 매뉴얼로 나만의 Q&A 챗봇 만들기 🤖</summary>
+                <div class="workflow-content">
+                    <h4>🎯 목표: 담임 교사를 위한 '학교폭력 사안 처리' 연수 자료 제작</h4>
+                    <p>[업무 매뉴얼] → NotebookLM → [Q&A] → Google AI Studio → [교사용 연수자료]</p>
+                    <ol>
+                        <li><strong>Step 1 (NotebookLM):</strong> '학교폭력 사안 처리 가이드북' PDF 파일을 NotebookLM에 업로드하여, <strong>문서 기반의 '학폭 업무 전문 비서(챗봇)'</strong>를 생성합니다.</li>
+                        <li><strong>Step 2 (NotebookLM):</strong> "담임교사로서 학폭 발생 시 대처 요령은?" 등 궁금한 내용을 질문하고 정확한 답변을 추출합니다.</li>
+                        <li><strong>Step 3 (Google AI Studio):</strong> NotebookLM과의 질의응답 내용을 바탕으로, Google AI Studio에서 담임교사를 위한 연수자료를 제작합니다.</li>
+                    </ol>
+                    <p><strong>심화:</strong> Compare mode(비교모드)와 Temperature(창의성 지수)를 활용하여 한번에 두 가지 버전의 연수 자료를 제작할 수 있습니다.<br> (T=0.3: 사실 집중 / T=1.2: 창의성 강화)</p>
+                </div>
+            </details>
+
+            <details class="workflow-item">
+                <summary>💎 워크플로우 5: 나만의 맞춤형 제미나이, 'Gem' 만들기 💎</summary>
+                <div class="workflow-content">
+                    <h4>🎯 목표: 교사가 작성한 프롬프트 초안을 제공하고, 이를 수정 및 보완하여 고도화된 제미나이 Gem 지침을 제작 <span class="chip">모델: Gemini 2.5 Pro</span></h4>
+                    <p>[프롬프트 초안] → Google AI Studio → [고도화된 Gem 지침] → Gemini → [나만의 제미나이 Gem]</p>
+                    <ol>
+                        <li><strong>Step 1 (Google AI Studio):</strong> 교사가 작성한 프롬프트를 제공하며 수정 보완하여 프롬프트를 고도화하여 제미나이 젬 지침을 만듭니다. <br>(모델은 Gemini 2.5 Pro로 설정)
+                            <div class="prompt-box">너는 최고의 프롬프트 엔지니어로서, 내가 작성한 초안을 수정 보완하여 완성도 높은 <strong>맞춤형 제미나이 Gem 지침</strong>을 만들어줘.
+---
+# 역할
+- 너는 현직 교사이자 가정통신문 작성 전문가이다.
+# 목표
+- 교사가 제공하는 정보를 바탕으로 가정통신문을 작성한다.
+# 맥락
+- 나는 [학교 이름] 교사이다.
+# 지침
+- 사용자에게 가정통신문 작성에 필요한 정보를 먼저 요청한다.
+- 사용자가 제공한 정보를 바탕으로 공식적이고 전문적인 가정통신문을 작성한다.
+<button class="copy-btn">복사</button></div>
+                        </li>
+                        <li><strong>Step 2 (Gemini):</strong> Google AI Studio를 통해 생성된 정교한 'Gemini Gem 지침(Custom Instructions)'을 복사합니다. 이후 Gemini의 'Gem 만들기' 기능에 해당 지침을 붙여 넣어 나만의 '가정통신문 Gem'을 완성합니다.</li>
+                    </ol>
+                </div>
+            </details>
+        </section>
+
+        <!-- 3. AI와 함께 성장하기 -->
+        <section id="conclusion">
+            <h2>💡 AI와 함께 성장하기</h2>
+            
+            <div class="card">
+                <h3>(1) AI 워크플로우의 의미: '듀얼 브레인(Dual Brain)'의 시대</h3>
+                <p>🧠 + 🤖</p>
+                <p>AI는 나의 경쟁자나 대체재가 아닙니다. 나의 뇌(전문성, 창의성, 교육 철학)와 AI의 뇌(빠른 정보 처리, 대량의 자료 생성)를 동시에 사용하는 '듀얼 브레인'의 개념으로 접근해야 합니다.</p>
+                <p>우리는 <strong>'무엇을(What)'</strong>과 <strong>'왜(Why)'</strong>에 집중하고, AI에게는 '어떻게(How)'의 많은 부분을 맡김으로써, 더 본질적이고 창의적인 교육 활동에 시간을 쏟을 수 있습니다.</p>
+            </div>
+            
+            <div class="card">
+                <h3>(2) 두려워 말고 시작하세요: 'AI 자전거 타기'</h3>
+                <p>🚴‍♀️💨</p>
+                <p>AI 활용 능력은 책이나 강의만으로 늘지 않습니다. 마치 자전거 타기와 같아서, 직접 페달을 밟고 때로는 넘어지면서 몸으로 익혀야 합니다.</p>
+                <p>오늘 배운 워크플로우 중 가장 쉬워 보이는 <strong>단 하나만이라도 이번 주에 꼭 시도해 보세요.</strong> 프롬프트가 어색해도, 결과가 마음에 들지 않아도 괜찮습니다. 그 경험이 쌓여 AI라는 멋진 자전거를 자유자재로 타게 될 것입니다.</p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>AI 시대, 선생님의 새로운 가능성을 응원합니다. made by AI전 ✨</p>
+    </footer>
+
+    <script>
+        // --- Dark/Light Mode Toggle ---
+        const themeToggle = document.getElementById('checkbox');
+        const currentTheme = localStorage.getItem('theme');
+
+        if (currentTheme) {
+            document.documentElement.classList.add(currentTheme);
+            if (currentTheme === 'dark-mode') {
+                themeToggle.checked = true;
+            }
+        }
+
+        function switchTheme(e) {
+            if (e.target.checked) {
+                document.documentElement.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark-mode');
+            } else {
+                document.documentElement.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light-mode');
+            }
+        }
+
+        themeToggle.addEventListener('change', switchTheme, false);
+
+        // --- Copy to Clipboard for Prompts ---
+        const copyButtons = document.querySelectorAll('.copy-btn');
+
+        copyButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const promptBox = button.parentElement;
+                const textToCopy = promptBox.innerText.replace(button.innerText, '').trim();
+                
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    const originalText = button.innerText;
+                    button.innerText = '복사 완료!';
+                    button.style.backgroundColor = '#34A853'; // Google Green
+
+                    setTimeout(() => {
+                        button.innerText = originalText;
+                        button.style.backgroundColor = 'var(--primary-color)';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('복사 실패:', err);
+                });
+            });
+        });
+
+    </script>
+</body>
+</html>
